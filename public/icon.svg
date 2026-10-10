@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title description">
+  <title id="title">论文图片排版助手</title>
+  <desc id="description">由四个科研图片面板组成的圆角图标</desc>
+  <defs>
+    <linearGradient id="background" x1="8" y1="4" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1c2b24"/>
+      <stop offset="1" stop-color="#0b5d43"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="16" y1="14" x2="48" y2="50" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f8fbf8"/>
+      <stop offset="1" stop-color="#d9ebe2"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#background)"/>
+  <rect x="2.75" y="2.75" width="58.5" height="58.5" rx="15.25" fill="none" stroke="#ffffff" stroke-opacity=".13" stroke-width="1.5"/>
+  <rect x="13" y="13" width="17" height="17" rx="4" fill="url(#panel)"/>
+  <rect x="34" y="13" width="17" height="17" rx="4" fill="#74b99a"/>
+  <rect x="13" y="34" width="23" height="17" rx="4" fill="#74b99a"/>
+  <rect x="40" y="34" width="11" height="17" rx="4" fill="url(#panel)"/>
+  <circle cx="21.5" cy="21.5" r="3" fill="#0f7557"/>
+  <path d="M17 45c3-5 6-7 9-7 2.8 0 5.2 1.5 7 4.5V47H17v-2Z" fill="#e8f4ee" fill-opacity=".72"/>
+  <circle cx="42.5" cy="21.5" r="3.25" fill="#f3c46d"/>
+</svg>

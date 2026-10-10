@@ -1,0 +1,27 @@
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+*.local
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
+%SystemDrive%/
+.idea/
+
+# Local marketing drafts and generated promotional assets
+docs/marketing/
+
+# Tencent Cloud EdgeOne
+.env
+.edgeone/*
+.tef_dist/*
+  
+
+# Local verification outputs and private project backups
+artifacts/
+*.figgrid
+*.tif
+*.tiff
+layout-assistant-backup*.json
