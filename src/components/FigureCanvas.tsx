@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useId, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import type { PointerEvent as ReactPointerEvent } from 'react'
 import type {
   FigureProjectV2,
@@ -21,6 +21,7 @@ interface FigureCanvasProps {
     position: ReorderPosition,
   ) => void
   className?: string
+  previewScale?: number
 }
 
 interface PointerDragState {
@@ -50,19 +51,10 @@ export function FigureCanvas({
   onSelect,
   onReorder,
   className = '',
+  previewScale,
 }: FigureCanvasProps) {
   const instanceId = useId().replace(/[^a-zA-Z0-9_-]/g, '')
   const svgRef = useRef<SVGSVGElement>(null)
-  const previousOrigin = useRef({ x: solved.viewBoxX ?? 0, y: solved.viewBoxY ?? 0 })
-  useLayoutEffect(() => {
-    const origin = { x: solved.viewBoxX ?? 0, y: solved.viewBoxY ?? 0 }
-    const viewport = svgRef.current?.parentElement
-    if (interactive && viewport) {
-      viewport.scrollLeft += previousOrigin.current.x - origin.x
-      viewport.scrollTop += previousOrigin.current.y - origin.y
-    }
-    previousOrigin.current = origin
-  }, [interactive, solved.viewBoxX, solved.viewBoxY])
   const pointerDragRef = useRef<PointerDragState | null>(null)
   const [dragVisual, setDragVisual] = useState<DragVisualState | null>(null)
   const assetMap = new Map<string, ImageAsset>(
@@ -191,7 +183,7 @@ export function FigureCanvas({
       ref={svgRef}
       className={`figure-svg${dragVisual ? ' is-panel-dragging' : ''} ${className}`}
       viewBox={`${solved.viewBoxX ?? 0} ${solved.viewBoxY ?? 0} ${solved.width} ${solved.height}`}
-      style={interactive ? { width: solved.width, height: solved.height } : undefined}
+      style={previewScale !== undefined || interactive ? { width: solved.width * (previewScale ?? 1), height: solved.height * (previewScale ?? 1) } : undefined}
       role="img"
       aria-label="科研多面板图片预览"
       data-testid="figure-canvas"

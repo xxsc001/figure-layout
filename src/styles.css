@@ -3780,3 +3780,18 @@ body.landing-active #root {
 .precise-value { display: inline-flex; align-items: center; gap: 4px; }
 .precise-value input[type="number"] { width: 82px; min-width: 0; padding: 5px 7px; border: 1px solid var(--border, #d2d9d3); border-radius: 7px; background: white; text-align: right; font: inherit; }
 .precise-value input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+
+.preview-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.preview-toolbar button { min-height: 36px; padding: 7px 12px; font-size: 13px; width: auto; white-space: nowrap; }
+.preview-toolbar output { min-width: 44px; text-align: center; font-variant-numeric: tabular-nums; }
+.preview-toolbar .preview-zoom { padding-inline: 10px; }
+.workspace-viewport { height: 62vh; max-height: 62vh; min-height: 280px; padding: 24px; scrollbar-gutter: stable; }
+.workspace-viewport .figure-svg { margin: 0; max-width: none; max-height: none; }
+.final-preview-dialog { width: min(1400px, 95vw); max-width: 95vw; height: 92vh; max-height: 92vh; padding: 20px; border: 1px solid #d2d9d3; border-radius: 16px; color: var(--ink); background: #f6f7f5; }
+.final-preview-dialog::backdrop { background: rgb(15 30 25 / 55%); }
+.final-preview-dialog header, .final-preview-dialog footer { display: flex; align-items: center; gap: 12px; }
+.final-preview-dialog header { justify-content: space-between; margin-bottom: 12px; }
+.final-preview-dialog h2 { margin: 0; font-size: 20px; }
+.final-preview-dialog footer { margin-top: 12px; flex-wrap: wrap; }
+.final-preview-dialog .workspace-viewport { height: calc(92vh - 195px); max-height: none; min-height: 160px; }
+.final-preview-dialog button { width: auto; min-height: 36px; padding: 8px 14px; }

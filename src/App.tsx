@@ -3,7 +3,7 @@ import { CandidatePicker } from './components/CandidatePicker'
 import { BridgeImportPage } from './components/BridgeImportPage'
 import { CollapsibleSection } from './components/CollapsibleSection'
 import { DashboardShell } from './components/DashboardShell'
-import { FigureCanvas } from './components/FigureCanvas'
+import { FigureWorkspace } from './components/FigureWorkspace'
 import { GeneralSettingsPage } from './components/GeneralSettingsPage'
 import { ImageSidebar } from './components/ImageSidebar'
 import { useAutomaticWorkspaceBackup, useWorkspaceBackupStatus } from './hooks/useWorkspaceBackup'
@@ -608,22 +608,17 @@ function EditorApp({
                   className="figure-stage"
                   onToggle={toggleSection}
                 >
-                  <div
-                    className={`canvas-frame${
-                      project.style.background === 'transparent'
-                        ? ' checkerboard'
-                        : ''
-                    }`}
-                  >
-                    <FigureCanvas
-                      project={project}
-                      solved={solved}
-                      selectedAssetId={selectedAssetId}
-                      interactive
-                      onSelect={setSelectedAssetId}
-                      onReorder={reorderAssets}
-                    />
-                  </div>
+                  <FigureWorkspace
+                    project={project}
+                    solved={solved}
+                    selectedAssetId={selectedAssetId}
+                    onSelect={setSelectedAssetId}
+                    onReorder={reorderAssets}
+                    onExportPng={exportPng}
+                    onExportTiff={exportTiff}
+                    onExportSvg={exportSvg}
+                    busy={busyAction !== null}
+                  />
                   <div className="canvas-footer">
                     <span>{orderedAssets.length} 个面板</span>
                     <span>画布比例 {(solved.width / solved.height).toFixed(2)} : 1</span>
