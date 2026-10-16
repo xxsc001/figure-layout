@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { EXPORT_WIDTH_PRESETS } from '../constants'
 import {
   LABEL_FONT_OPTIONS,
@@ -58,11 +58,20 @@ function RangeRow({
   disabled?: boolean
   onChange: (value: number) => void
 }) {
+  const [draft, setDraft] = useState(String(value))
+  useEffect(() => setDraft(String(value)), [value])
   return (
     <label className={`range-row${disabled ? ' is-disabled' : ''}`}>
       <span>
         {label}
-        <output>{value}{unit}</output>
+        <span className="precise-value"><input type="number" aria-label={label + '数值'} min={min} max={max} step={step} value={draft} disabled={disabled}
+          onBlur={() => setDraft(String(value))}
+          onChange={(event) => {
+            setDraft(event.target.value)
+            if (event.target.value === '') return
+            const next = Number(event.target.value)
+            if (Number.isFinite(next)) onChange(Math.min(max, Math.max(min, next)))
+          }} /><span>{unit}</span></span>
       </span>
       <input
         type="range"

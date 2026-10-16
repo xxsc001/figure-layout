@@ -84,11 +84,11 @@ export async function buildSvgString(
   const background =
     project.style.background === 'transparent'
       ? ''
-      : `<rect width="100%" height="100%" fill="#ffffff" />`
+      : `<rect x="${solved.viewBoxX ?? 0}" y="${solved.viewBoxY ?? 0}" width="${solved.width}" height="${solved.height}" fill="#ffffff" />`
 
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${solved.width}" height="${solved.height}" viewBox="0 0 ${solved.width} ${solved.height}">`,
+    `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${solved.width}" height="${solved.height}" viewBox="${solved.viewBoxX ?? 0} ${solved.viewBoxY ?? 0} ${solved.width} ${solved.height}">`,
     background,
     '<defs>',
     solved.frames

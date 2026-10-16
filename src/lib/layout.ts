@@ -1,3 +1,4 @@
+import { getLabelPlacement } from './labels'
 import { CANVAS_WIDTH } from '../constants'
 import type {
   FigureStyle,
@@ -307,25 +308,19 @@ export function solveLayout(
     })
   }
 
-  // Reserve space outside each panel without changing its image dimensions.
-  const labelsVisible = style.labelMode !== 'none'
-  const gutterX = labelsVisible && style.labelOffsetX < 0
-    ? Math.min(120, -style.labelOffsetX) + style.labelSize * 0.1
-    : 0
-  const gutterY = labelsVisible && style.labelOffsetY < 0
-    ? Math.min(120, -style.labelOffsetY) + style.labelSize * 0.3
-    : 0
-  const columns = Math.max(...candidate.rows)
-  const left = style.labelPosition.endsWith('left')
-  const top = style.labelPosition.startsWith('top')
-  return {
-    width: CANVAS_WIDTH + columns * gutterX,
-    height: Math.max(1, y - style.gap + style.padding) + candidate.rows.length * gutterY,
-    frames: frames.map((frame) => ({
-      ...frame,
-      x: frame.x + (frame.columnIndex + (left ? 1 : 0) +
-        (columns - candidate.rows[frame.rowIndex]) / 2) * gutterX,
-      y: frame.y + (frame.rowIndex + (top ? 1 : 0)) * gutterY,
-    })),
+  // Expand only the canvas bounds; panel coordinates and dimensions stay fixed.
+  const height = Math.max(1, y - style.gap + style.padding)
+  let minX = 0, minY = 0, maxX = CANVAS_WIDTH, maxY = height
+  if (style.labelMode !== 'none') {
+    const stroke = style.labelSize * 0.1
+    const textWidth = style.labelSize * (style.labelParentheses ? 2 : 1.2)
+    for (const frame of frames) {
+      const label = getLabelPlacement(frame, style)
+      minX = Math.min(minX, label.x - (label.textAnchor === 'end' ? textWidth : 0) - stroke)
+      maxX = Math.max(maxX, label.x + (label.textAnchor === 'start' ? textWidth : 0) + stroke)
+      minY = Math.min(minY, label.y - style.labelSize - stroke)
+      maxY = Math.max(maxY, label.y + style.labelSize * 0.3 + stroke)
+    }
   }
+  return { width: maxX - minX, height: maxY - minY, viewBoxX: minX, viewBoxY: minY, frames }
 }

@@ -99,11 +99,13 @@ describe('outside panel labels', () => {
         expanded.frames.forEach((frame, index) => {
           expect(frame.width).toBe(original.frames[index].width)
           expect(frame.height).toBe(original.frames[index].height)
+          expect(frame.x).toBe(original.frames[index].x)
+          expect(frame.y).toBe(original.frames[index].y)
           const label = getLabelPlacement(frame, style)
-          expect(label.x).toBeGreaterThanOrEqual(style.labelSize * 0.05)
-          expect(label.x).toBeLessThanOrEqual(expanded.width - style.labelSize * 0.05)
-          expect(label.y - style.labelSize).toBeGreaterThanOrEqual(0)
-          expect(label.y + style.labelSize * 0.25).toBeLessThanOrEqual(expanded.height)
+          expect(label.x).toBeGreaterThanOrEqual((expanded.viewBoxX ?? 0) + style.labelSize * 0.05)
+          expect(label.x).toBeLessThanOrEqual((expanded.viewBoxX ?? 0) + expanded.width - style.labelSize * 0.05)
+          expect(label.y - style.labelSize).toBeGreaterThanOrEqual(expanded.viewBoxY ?? 0)
+          expect(label.y + style.labelSize * 0.25).toBeLessThanOrEqual((expanded.viewBoxY ?? 0) + expanded.height)
         })
       }
     },

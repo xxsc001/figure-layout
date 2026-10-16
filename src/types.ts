@@ -106,6 +106,8 @@ export interface PanelFrame {
 }
 
 export interface SolvedLayout {
+  viewBoxX?: number
+  viewBoxY?: number
   width: number
   height: number
   frames: PanelFrame[]
