@@ -334,7 +334,7 @@ export function InspectorPanel({
           onChange={(labelSize) => onStyleChange({ labelSize })}
         />
         <RangeRow
-          label="水平边距"
+          label="标签水平位置"
           value={style.labelOffsetX}
           min={-120}
           max={120}
@@ -342,7 +342,7 @@ export function InspectorPanel({
           onChange={(labelOffsetX) => onStyleChange({ labelOffsetX })}
         />
         <RangeRow
-          label="垂直边距"
+          label="标签垂直位置"
           value={style.labelOffsetY}
           min={-120}
           max={120}

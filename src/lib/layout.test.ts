@@ -1,5 +1,6 @@
 import '../test/setup'
 import { describe, expect, it } from 'vitest'
+import { getLabelPlacement } from './labels'
 import { DEFAULT_STYLE } from '../constants'
 import type { ImageAsset, PanelFrame } from '../types'
 import {
@@ -83,5 +84,35 @@ describe('layout engine', () => {
     expect(generateLayoutCandidates(assets)).toEqual(
       generateLayoutCandidates(assets),
     )
+  })
+})
+describe('outside panel labels', () => {
+  it.each(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const)(
+    'reserves room for %s labels without resizing images', (labelPosition) => {
+      const assets = createAssets(6)
+      for (const candidate of generateLayoutCandidates(assets)) {
+        const base = solveLayout(candidate, assets, DEFAULT_STYLE)
+        const style = { ...DEFAULT_STYLE, padding: 0, labelPosition, labelOffsetX: -120, labelOffsetY: -120 }
+        const original = solveLayout(candidate, assets, { ...style, labelOffsetX: 0, labelOffsetY: 0 })
+        const expanded = solveLayout(candidate, assets, style)
+        expect(expanded.width).toBeGreaterThan(base.width)
+        expanded.frames.forEach((frame, index) => {
+          expect(frame.width).toBe(original.frames[index].width)
+          expect(frame.height).toBe(original.frames[index].height)
+          const label = getLabelPlacement(frame, style)
+          expect(label.x).toBeGreaterThanOrEqual(style.labelSize * 0.05)
+          expect(label.x).toBeLessThanOrEqual(expanded.width - style.labelSize * 0.05)
+          expect(label.y - style.labelSize).toBeGreaterThanOrEqual(0)
+          expect(label.y + style.labelSize * 0.25).toBeLessThanOrEqual(expanded.height)
+        })
+      }
+    },
+  )
+  it('does not expand the canvas when labels are disabled', () => {
+    const assets = createAssets(2)
+    const candidate = generateLayoutCandidates(assets)[0]
+    const style = { ...DEFAULT_STYLE, labelMode: 'none' as const }
+    expect(solveLayout(candidate, assets, { ...style, labelOffsetX: -120, labelOffsetY: -120 }))
+      .toEqual(solveLayout(candidate, assets, style))
   })
 })

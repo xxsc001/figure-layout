@@ -307,9 +307,25 @@ export function solveLayout(
     })
   }
 
+  // Reserve space outside each panel without changing its image dimensions.
+  const labelsVisible = style.labelMode !== 'none'
+  const gutterX = labelsVisible && style.labelOffsetX < 0
+    ? Math.min(120, -style.labelOffsetX) + style.labelSize * 0.1
+    : 0
+  const gutterY = labelsVisible && style.labelOffsetY < 0
+    ? Math.min(120, -style.labelOffsetY) + style.labelSize * 0.3
+    : 0
+  const columns = Math.max(...candidate.rows)
+  const left = style.labelPosition.endsWith('left')
+  const top = style.labelPosition.startsWith('top')
   return {
-    width: CANVAS_WIDTH,
-    height: Math.max(1, y - style.gap + style.padding),
-    frames,
+    width: CANVAS_WIDTH + columns * gutterX,
+    height: Math.max(1, y - style.gap + style.padding) + candidate.rows.length * gutterY,
+    frames: frames.map((frame) => ({
+      ...frame,
+      x: frame.x + (frame.columnIndex + (left ? 1 : 0) +
+        (columns - candidate.rows[frame.rowIndex]) / 2) * gutterX,
+      y: frame.y + (frame.rowIndex + (top ? 1 : 0)) * gutterY,
+    })),
   }
 }
