@@ -8,6 +8,7 @@ import { getImageRenderRect, getPanelLabel } from './geometry'
 import { getLabelPlacement } from './labels'
 
 import { encodeTiff } from './tiff'
+import { setPngDpi } from './png'
 
 const MAX_EXPORT_PIXELS = 80_000_000
 const MAX_EXPORT_DIMENSION = 16_384
@@ -185,13 +186,16 @@ export async function createRasterBlob(
   quality?: number,
 ) {
   const canvas = await renderRasterCanvas(project, solved, outputWidth)
-  return new Promise<Blob>((resolve, reject) => {
+  const blob = await new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(
       (blob) => (blob ? resolve(blob) : reject(new Error('PNG 编码失败。'))),
       mime,
       quality,
     )
   })
+  return mime === 'image/png'
+    ? new Blob([setPngDpi(await blob.arrayBuffer())], { type: 'image/png' })
+    : blob
 }
 
 export function downloadBlob(blob: Blob, fileName: string) {
